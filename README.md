@@ -37,7 +37,7 @@ Example LaneChange payload:
 ```
 {
     "lane": "nintendo",
-    "expires": "2020-10-24T01:45:53.570211-04:00"
+    "duration": 86400
 }
 ```
 
