@@ -1,5 +1,5 @@
 ## LaneChange
-Receive an incoming HTTP request on `/' and delegate the response according to a previously indicated preference for the incoming IP.
+Receive an incoming HTTP request on `/` and delegate the response according to a previously indicated preference for the incoming IP.
 
 If we don't have any LaneChange preferences in memory for the given IP, the request will receive the default response. The intent is for this endpoint to be hit many times, and have the response vary without needing to store any cookie or client information besides the IP.
 
@@ -37,7 +37,7 @@ Example LaneChange payload:
 ```
 {
     "lane": "nintendo",
-    "duration": 86400
+    "expires": "2020-10-24T01:45:53.570211-04:00"
 }
 ```
 
