@@ -20,39 +20,83 @@
         width: 100%;
         background-color: #eee;
         padding: 10px;
-    }
-    select {
-        height: 20px;
+        white-space: pre-wrap;
     }
 </style>
-<p>
-    <strong>This controller is still under development, and changes you make here may not stick forever yet.</strong> Please let us know your experiences with it on our Discord server at <a href="http://discord.fortheusers.org">discord.fortheusers.org</a>.
-</p>
-<p>
-    If you would like to disable the DNS for a period of time or indefinitely, you can do so on this page. You should use this if setting the DNS back to Automatic does not dismiss the browser. 
-</p>
-<p>
-    If you disable it indefinitely, and you'd like to get it back, you can visit this page on a computer at <a href="https://dns.switchbru.com">https://dns.switchbru.com</a>. (Needs to be on the same network as your Switch).
-</p>
-<div>
+<body onload="getStatus()">
+    <p>
+        <strong>This controller is still under development, and changes you make here may not stick forever yet.</strong> Please let us know your experiences with it on our Discord server at <a href="http://discord.fortheusers.org">discord.fortheusers.org</a>.
+    </p>
+    <p>
+        If you would like to disable the DNS for a period of time or indefinitely, you can do so on this page. You should use this if setting the DNS back to Automatic does not dismiss the browser. 
+    </p>
+    <p>
+        If you disable it indefinitely, and you'd like to get it back, you can visit this page on a computer at <a href="https://dns.switchbru.com">https://dns.switchbru.com</a>. (Needs to be on the same network as your Switch).
+    </p>
     <div>
-        <h4>Current Status</h4>
-        <pre id="curStatus">Checking...</pre>
+        <div>
+            <h4>Current Status</h4>
+            <pre id="curStatus">Checking...</pre>
+        </div>
+        <div>
+            <h4>Update Status</h4>
+            <select id="dropdown" onchange="document.getElementById('send').disabled = false">
+                <option disabled selected>Select a Status</option>
+                <option value="enable">Enable indefinitely</option>
+                <option value="300">Disable for 5 Minutes</option>
+                <option value="1800">Disable for 30 Minutes</option>
+                <option value="3600">Disable for 1 Hour</option>
+                <option value="18000">Disable for 5 Hours</option>
+                <option value="86400">Disable for 1 Day</option>
+                <option value="604800">Disable for 7 Days</option>
+                <option value="disable">Disable indefinitely</option>
+            </select>
+            <button id="send" disabled onclick="updateStatus()">Apply Changes</button>
+            <p><i>Switchbru DNS is intended to help users browse the Internet on their Switch. We apologize for any inconvenience iff you did not intend for it to appear.</i></p>
+        </div>
     </div>
-    <div>
-        <h4>Update Status</h4>
-        <select>
-            <option disabled selected hidden>Select a Status</option>
-            <option value="enable">Enable indefinitely</option>
-            <option value="300">Disable for 5 Minutes</option>
-            <option value="1800">Disable for 30 Minutes</option>
-            <option value="3600">Disable for 1 Hour</option>
-            <option value="18000">Disable for 5 Hours</option>
-            <option value="86400">Disable for 1 Day</option>
-            <option value="604800">Disable for 7 Days</option>
-            <option value="disable">Disable indefinitely</option>
-        </select>
-        <button>Apply Changes</button>
-        <p><i>Switchbru DNS is intended to help users browse the Internet on their Switch. We apologize for any inconvenience iff you did not intend for it to appear.</i></p>
-    </div>
-</div>
+</body>
+
+<script>
+let CONTROLLER_URL = "http://lanechange.fortheusers.org/change";
+function getStatus()
+{
+    let box = document.getElementById("curStatus");
+    fetch(CONTROLLER_URL).then(data => {
+        if (data.status == 404) {
+            box.innerHTML = "No overrides for your IP currently exist.\nDNS redirection will work normally.";
+            return;
+        }
+        data.text().then(resp => {
+            box.innerHTML = resp;
+        })
+    })
+}
+function updateStatus()
+{
+    let selection = document.getElementById("dropdown").value;
+    if (selection == "enable") {
+        fetch(CONTROLLER_URL, { method: 'DELETE' }).then(resp => {
+            location.reload();
+        });
+        return;
+    }
+
+    if (selection == "disable") {
+        fetch(CONTROLLER_URL, { method: 'POST', body: JSON.stringify({
+            lane: "nintendo"
+        })}).then(resp => {
+            location.reload();
+        });
+        return;
+    }
+
+    // a time in seconds
+    fetch(CONTROLLER_URL, { method: 'POST', body: JSON.stringify({
+            lane: "nintendo",
+            duration: parseInt(selection)
+        })}).then(resp => {
+            location.reload();
+        });
+}
+</script>

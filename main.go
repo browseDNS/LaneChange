@@ -121,7 +121,9 @@ func main() {
 
 	http.HandleFunc("/change", func(res http.ResponseWriter, req *http.Request) {
 		ip := GetIP(req)
-		res.Header().Set("Access-Control-Allow-Origin", "*")
+		headers := res.Header()
+		headers.Set("Access-Control-Allow-Origin", "*")
+		headers.Set("Access-Control-Allow-Methods", "GET, POST, DELETE")
 
 		if req.Method == http.MethodDelete {
 			// remove entry for IP (does nothing if doesn't exist)
