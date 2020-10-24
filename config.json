@@ -1,0 +1,18 @@
+{
+    "default": "switchbru",
+    "lanes": {
+        "switchbru": {
+            "headers": {
+                "Content-Type": "text/html"
+            },
+            "content": "<script>location.href = 'https://dns.switchbru.com';</script>"
+        },
+        "nintendo": {
+            "headers": {
+                "Content-Type": "text/plain",
+                "X-Organization": "Nintendo"
+            },
+            "content": "ok"
+        }
+    }
+}
