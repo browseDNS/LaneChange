@@ -1,6 +1,6 @@
 {
     "port": 4445,
-    "default": "nintendo",
+    "default": "switchbru",
     "lanes": {
         "switchbru": {
             "headers": {

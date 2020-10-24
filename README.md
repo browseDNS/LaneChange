@@ -47,8 +47,9 @@ To view your current preference, issue a `GET /change`. A 404 response on this e
 
 ### Compiling and Running
 ```
+go get github.com/patrickmn/go-cache
 go build
-./lanechange
+./LaneChange
 ```
 
 ### License
