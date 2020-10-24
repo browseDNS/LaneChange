@@ -43,7 +43,7 @@ type LaneChangeResp struct {
 // https://golangcode.com/get-the-request-ip-addr/
 // https://stackoverflow.com/a/33301173
 func GetIP(r *http.Request) string {
-	forwarded := r.Header.Get("X-FORWARDED-FOR")
+	forwarded := r.Header.Get("X-Real-IP")
 	if forwarded != "" {
 		return forwarded
 	}
