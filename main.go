@@ -37,6 +37,7 @@ type LaneChange struct {
 type LaneChangeResp struct {
 	LaneKey string    `json:"lane"`
 	Expires time.Time `json:"expires"`
+	IP      string    `json:"ip"`
 }
 
 // https://golangcode.com/get-the-request-ip-addr/
@@ -155,6 +156,7 @@ func main() {
 			var change LaneChangeResp
 			change.LaneKey = userLane.(*Lane).LaneKey
 			change.Expires = expiration
+			change.IP = ip
 			output, _ := json.MarshalIndent(change, "", "\t")
 			res.Write(output)
 			return
