@@ -111,6 +111,7 @@ func main() {
 		// apply lane headers
 		headers := res.Header()
 		headers.Set("Cache-Control", "max-age=0, no-cache, no-store")
+		headers.Set("Access-Control-Allow-Origin", "*")
 		for key, value := range lane.Headers {
 			headers.Set(key, value)
 		}
