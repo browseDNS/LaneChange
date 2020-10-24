@@ -111,7 +111,6 @@ func main() {
 		// apply lane headers
 		headers := res.Header()
 		headers.Set("Cache-Control", "max-age=0, no-cache, no-store")
-		headers.Set("Access-Control-Allow-Origin", "*")
 		for key, value := range lane.Headers {
 			headers.Set(key, value)
 		}
@@ -122,6 +121,7 @@ func main() {
 
 	http.HandleFunc("/change", func(res http.ResponseWriter, req *http.Request) {
 		ip := GetIP(req)
+		res.Header().Set("Access-Control-Allow-Origin", "*")
 
 		if req.Method == http.MethodDelete {
 			// remove entry for IP (does nothing if doesn't exist)
@@ -166,6 +166,8 @@ func main() {
 	})
 
 	http.HandleFunc("/config", func(res http.ResponseWriter, req *http.Request) {
+		res.Header().Set("Access-Control-Allow-Origin", "*")
+
 		// respond with our config, but don't expose port
 		var configNoPort Config
 		configNoPort.Lanes = config.Lanes
